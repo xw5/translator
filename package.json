@@ -1,0 +1,75 @@
+{
+	"id": "translator",
+	"name": "translator",
+	"description": "翻译工具，写代码起变量就用它",
+	"displayName": "翻译工具",
+	"version": "0.0.1",
+	"publisher": "hbxw",
+	"engines": {
+		"HBuilderX": "^2.7.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"main": "./extension",
+	"activationEvents": [
+		"onCommand:extension.helloWorld",
+		"onView:api.WebViewActivityBar",
+		"onView:api.WebViewRightSide"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.helloWorld",
+				"title": "Hello World"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"command": "extension.helloWorld",
+					"group": "z_commands",
+					"when": "editorTextFocus"
+				},
+				{
+					"group": "z_commands"
+				}
+			]
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "WebViewcontainerIdActivityBar",
+					"title": "翻译助手（资源管理器）"
+				}
+			],
+			"rightside": [
+				{
+					"id": "WebViewcontainerIdRightSide",
+					"title": "翻译助手（右侧栏）"
+				}
+			]
+		},
+		"views": {
+			"WebViewcontainerIdActivityBar": [
+				{
+					"id": "api.WebViewActivityBar",
+					"title": "翻译助手,起好变量就用它"
+				}
+			],
+			"WebViewcontainerIdRightSide": [
+				{
+					"id": "api.WebViewRightSide",
+					"title": "翻译助手,起好变量就用它"
+				}
+			]
+		}
+	},
+	"extensionDependencies": [
+		"plugin-manager"
+	],
+	"dependencies": {
+		"axios": "^0.21.1",
+		"chinese-to-pinyin": "^1.3.1"
+	}
+}
