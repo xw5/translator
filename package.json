@@ -1,6 +1,6 @@
 {
-	"id": "translator",
-	"name": "translator",
+	"id": "Translator",
+	"name": "Translator",
 	"description": "翻译工具，写代码起变量就用它",
 	"displayName": "翻译工具",
 	"version": "0.0.1",
@@ -13,29 +13,10 @@
 	],
 	"main": "./extension",
 	"activationEvents": [
-		"onCommand:extension.helloWorld",
 		"onView:api.WebViewActivityBar",
 		"onView:api.WebViewRightSide"
 	],
 	"contributes": {
-		"commands": [
-			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
-			}
-		],
-		"menus": {
-			"editor/context": [
-				{
-					"command": "extension.helloWorld",
-					"group": "z_commands",
-					"when": "editorTextFocus"
-				},
-				{
-					"group": "z_commands"
-				}
-			]
-		},
 		"viewsContainers": {
 			"activitybar": [
 				{
