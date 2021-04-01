@@ -1,12 +1,12 @@
 {
-	"id": "Translator",
+	"id": "hbxw-Translator",
 	"name": "Translator",
 	"description": "翻译工具，写代码起变量就用它",
 	"displayName": "翻译工具",
 	"version": "0.0.1",
 	"publisher": "hbxw",
 	"engines": {
-		"HBuilderX": "^2.7.0"
+		"HBuilderX": "^3.1.0"
 	},
 	"categories": [
 		"Other"
@@ -52,5 +52,27 @@
 	"dependencies": {
 		"axios": "^0.21.1",
 		"chinese-to-pinyin": "^1.3.1"
-	}
+    },
+    "keywords": [
+        "翻译",
+        "变量",
+        "中英翻译",
+        "拼音翻译"
+    ],
+    "repository": "",
+    "dcloudext": {
+        "category": [
+            "HBuilderX",
+            "HBuilderX"
+        ],
+        "contact": {
+            "qq": ""
+        },
+        "declaration": {
+            "ads": "无",
+            "data": "元",
+            "permissions": "无"
+        },
+        "npmurl": ""
+    }
 }
