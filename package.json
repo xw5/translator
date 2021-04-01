@@ -1,12 +1,12 @@
 {
-	"id": "hbxw-Translator",
-	"name": "Translator",
-	"description": "翻译工具，写代码起变量就用它",
-	"displayName": "翻译工具",
-	"version": "0.0.1",
+	"id": "hbxw-translator",
+	"name": "translator",
+	"description": "翻译助手，写代码起变量就用它",
+	"displayName": "翻译助手",
+	"version": "0.0.2",
 	"publisher": "hbxw",
 	"engines": {
-		"HBuilderX": "^3.1.0"
+		"HBuilderX": "^3.0.0"
 	},
 	"categories": [
 		"Other"
@@ -47,6 +47,7 @@
 		}
 	},
 	"extensionDependencies": [
+		"npm",
 		"plugin-manager"
 	],
 	"dependencies": {
@@ -66,11 +67,11 @@
             "HBuilderX"
         ],
         "contact": {
-            "qq": ""
+            "qq": "412832768"
         },
         "declaration": {
             "ads": "无",
-            "data": "元",
+            "data": "无",
             "permissions": "无"
         },
         "npmurl": ""
