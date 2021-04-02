@@ -74,19 +74,27 @@ function showWebView(webviewPanel) {
         				padding-top: 10px;
         			}
         			.translate_title{
-        				padding-bottom: 5px;
-        				color: #666;
+        				color: #333;
+        			}
+        			.translate_py_title{
+        				margin-top: 10px;
         			}
         			.translate_result_wrap{
         				display: flex;
         				align-items: flex-end;
+								flex-wrap: wrap;
+        			}
+        			.result_type{
+        				color:#999;
         			}
         			.copy_btn{
         				height:24px;
         				cursor: pointer;
+								flex:0 0 auto;
         			}
         			.translate_result{
         				flex:1;
+								font-size: 12px;
         				margin-right: 5px;
         				line-height: 24px;
         				min-height: 34px;
@@ -109,25 +117,128 @@ function showWebView(webviewPanel) {
         			<div class="translate_show">
         				<div class="translate_title">语言翻译结果：</div>
         				<div class="translate_result_wrap">
-        					<p class="translate_result" id="translateResult"></p>
+        					<p class="translate_result translate_lang_result"></p>
         					<button class="copy_btn">复制</button>
         				</div>
-        				<div class="translate_title">拼音翻译结果：</div>
         				<div class="translate_result_wrap">
-        					<p class="translate_result" id="translatePyResult"></p>
+        					<p class="translate_result translate_lang_result"></p>
+        					<button class="copy_btn">复制</button>
+        				</div>
+        				<div class="translate_result_wrap">
+        					<p class="translate_result translate_lang_result"></p>
+        					<button class="copy_btn">复制</button>
+        				</div>
+        				<div class="translate_result_wrap">
+        					<p class="translate_result translate_lang_result"></p>
+        					<button class="copy_btn">复制</button>
+        				</div>
+        				<div class="translate_title translate_py_title">拼音翻译结果：</div>
+        				<div class="translate_result_wrap">
+        					<p class="translate_result translate_py_result"></p>
+        					<button class="copy_btn">复制</button>
+        				</div>
+        				<div class="translate_result_wrap">
+        					<p class="translate_result translate_py_result"></p>
+        					<button class="copy_btn">复制</button>
+        				</div>
+        				<div class="translate_result_wrap">
+        					<p class="translate_result translate_py_result"></p>
+        					<button class="copy_btn">复制</button>
+        				</div>
+        				<div class="translate_result_wrap">
+        					<p class="translate_result translate_py_result"></p>
         					<button class="copy_btn">复制</button>
         				</div>
         			</div>
         		</div>
+        		<script>
+        			/**
+        			 * 驼峰写法
+        			 * @param {String} str
+        			 */
+        			function hump(str) {
+        				var strArr = str.split(' ');
+        				if (strArr.length == 0 || !str) {
+        					return str;
+        				}
+        				var strArrResult = strArr.map((item, index) => {
+        					if (index == 0) {
+        						return item.toLowerCase();
+        					}
+        					return item.substring(0, 1).toUpperCase() + item.substring(1);
+        				});
+        				return strArrResult.join('');
+        			}
+        			
+        			/**
+        			 * 大写
+        			 * @param {String} str
+        			 */
+        			function uppercase(str) {
+        				var strArr = str.split(' ');
+        				var strArrResult = strArr.map((item, index) => {
+        					return item.toUpperCase();
+        				});
+        				return strArrResult.join('_');
+        			}
+        			
+        			/**
+        			 * 小写
+        			 * @param {String} str
+        			 */
+        			function lowercase(str) {
+        				var strArr = str.split(' ');
+        				var strArrResult = strArr.map((item, index) => {
+        					return item.toLowerCase();
+        				});
+        				return strArrResult.join('_');
+        			}
+        			var exchangeTools= {
+        				hump,
+        				uppercase,
+        				lowercase
+        			}
+        		</script>
         		<script type="text/javascript">
         			var translateBtn = document.querySelector("#translateBtn");
         			var translateInput = document.querySelector("#translateInput");
         			var clearBtn = document.querySelector("#clearBtn");
-        			var translateResult = document.querySelector("#translateResult");
-        			var translatePyResult = document.querySelector("#translatePyResult");
+        			var translateResult = document.querySelectorAll(".translate_lang_result");
+        			var translatePyResult = document.querySelectorAll(".translate_py_result");
         			var copyBtn = document.querySelectorAll(".copy_btn");
-        			var isListened = false;
+        			var hbuilderx = hbuilderx ? hbuilderx : null;
         			
+        			/**
+        			 * 清空元素html
+        			 * @param {Object} list
+        			 */
+        			function clearHtml(list) {
+        				Array.from(list).forEach((item) => {
+        					item.innerHTML = "";
+        				});
+        			}
+							
+							/**
+							 * 复制按钮状态
+							 * @param{Boolean} isShow
+							 */
+							function copyBtnToggle(isShow) {
+								Array.from(copyBtn).forEach((item) => {
+									item.style.display = isShow ? "block" : "none";
+								});
+							}
+							
+							/**
+							 * 复制按钮状态
+							 */
+							function clearBtnToggle() {
+								if (translateInput.value) {
+									clearBtn.style.display = "block";
+								} else {
+									clearBtn.style.display = "none";
+								}
+							}
+							
         			/**
         			 * dom事件绑定
         			 */
@@ -136,29 +247,28 @@ function showWebView(webviewPanel) {
         				translateBtn.addEventListener("click", function() {
         					var keywords = translateInput.value;
         					if (keywords) {
-        						translateResult.innerHTML = "";
-        						translatePyResult.innerHTML = "";
+        						clearHtml(translateResult);
+        						clearHtml(translatePyResult);
         						send(keywords);
         					}
         				}, false);
         				
         				// 复制语言翻译结果
-        				copyBtn[0].addEventListener("click", function() {
+        				document.querySelector('.translate_show').addEventListener("click", function(e) {
+        					let target = e.target;
+        					if (target.className != "copy_btn") {
+        						return;
+        					}
+        					let result = target.parentNode.querySelector('.translate_result').innerHTML;
+        					if (!hbuilderx) return;
         					hbuilderx.postMessage({
         						command: 'copy',
-        						text: translateResult.innerHTML
-        					});
-        				}, false);
-        				
-        				// 复制拼音翻译结果
-        				copyBtn[1].addEventListener("click", function() {
-        					hbuilderx.postMessage({
-        						command: 'copy',
-        						text: translatePyResult.innerHTML
+        						text: result
         					});
         				}, false);
         				
         				window.onfocus = function() {
+        					if (!hbuilderx) return;
         					hbuilderx.postMessage({
         						command: 'init'
         					});
@@ -167,25 +277,15 @@ function showWebView(webviewPanel) {
         				// 清除输入框内容
         				clearBtn.addEventListener("click", function() {
         					translateInput.value = "";
-        					translateResult.innerHTML = "";
-        					translatePyResult.innerHTML = "";
+        					clearHtml(translateResult);
+        					clearHtml(translatePyResult);
+									copyBtnToggle(false);
         				}, false);
-        			}
-        			
-        			/**
-        			 * 更改复制按钮状态
-        			 */
-        			function changeCopyBtnStaus() {
-        				if (!translateResult.innerHTML) {
-        					copyBtn[0].style.display = "none";
-        				} else {
-        					copyBtn[0].style.display = "block";
-        				}
-        				if (!translatePyResult.innerHTML) {
-        					copyBtn[1].style.display = "none";
-        				} else {
-        					copyBtn[1].style.display = "block";
-        				}
+								
+								translateInput.addEventListener('input', function() {
+									console.log("--translateInput--:", this);
+									clearBtnToggle();
+								}, false);
         			}
         			
         			/**
@@ -193,6 +293,7 @@ function showWebView(webviewPanel) {
         			 * @param {string} keywords
         			 */
         			function send(keywords) {
+        				if (!hbuilderx) return;
         				hbuilderx.postMessage({
         					command: 'translate',
         					text: keywords
@@ -201,15 +302,22 @@ function showWebView(webviewPanel) {
         			
         			window.onload = function() {
         				setTimeout(() => {
+        					if (!hbuilderx) return;
         					hbuilderx.onDidReceiveMessage((msg) => {
         						if (msg.command == "translateBack") {
-        							translateResult.innerHTML = msg.data['translateResult'][0][0].tgt;
-        							translatePyResult.innerHTML = msg.data.pyResult;
-        							changeCopyBtnStaus();
+        							let translateResultStr = msg.data['translateResult'][0][0].tgt;
+        							let translatePyResultStr = msg.data.pyResult;
+        							translateResult[0].innerHTML = translateResultStr;
+        							translateResult[1].innerHTML = exchangeTools.hump(translateResultStr);
+        							translateResult[2].innerHTML = exchangeTools.uppercase(translateResultStr);
+        							translateResult[3].innerHTML = exchangeTools.lowercase(translateResultStr);
+        							
+        							translatePyResult[0].innerHTML = translatePyResultStr;
+        							translatePyResult[1].innerHTML = exchangeTools.hump(translatePyResultStr);
+        							translatePyResult[2].innerHTML = exchangeTools.uppercase(translatePyResultStr);
+        							translatePyResult[3].innerHTML = exchangeTools.lowercase(translatePyResultStr);
+											copyBtnToggle(true);
         						} else if (msg.command == "autoFill") {
-											if (translateInput.value == msg.text) {
-												return;
-											}
         							translateInput.value = msg.text;
         							translateBtn.click();
         						}
@@ -219,13 +327,12 @@ function showWebView(webviewPanel) {
         					});
         				}, 500);
         			}
-        			
-        			// 判断复制按钮是否要显示
-        			changeCopyBtnStaus();
+							clearBtnToggle();
+        			copyBtnToggle(false);
         			bindEvent();
         		</script>
         	</body>
-        </html>    
+        </html>   
       `;
     webview.onDidReceiveMessage((msg) => {
 			if (msg.command == 'translate') {
