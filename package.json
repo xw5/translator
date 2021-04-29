@@ -3,8 +3,8 @@
 	"name": "translator",
 	"description": "翻译助手，写代码起变量就用它",
 	"displayName": "翻译助手",
-	"version": "0.0.3",
-	"publisher": "hbxw",
+	"version": "0.0.4",
+	"publisher": "xiewu",
 	"engines": {
 		"HBuilderX": "^3.0.0"
 	},
@@ -60,7 +60,7 @@
         "中英翻译",
         "拼音翻译"
     ],
-    "repository": "",
+    "repository": "https://gitee.com/github-9819409/translator",
     "dcloudext": {
         "category": [
             "HBuilderX",
