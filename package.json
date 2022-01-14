@@ -3,7 +3,7 @@
 	"name": "translator",
 	"description": "翻译助手，写代码起变量就用它",
 	"displayName": "翻译助手",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"publisher": "xiewu",
 	"engines": {
 		"HBuilderX": "^3.0.0"
