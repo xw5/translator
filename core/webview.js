@@ -18,6 +18,7 @@ function showWebView(webviewPanel) {
     } else {
         background = 'rgb(255,250,232)'
     };
+    let origin = config.get('translator.torigin');
     
     webview.html =
         `
@@ -145,6 +146,7 @@ function showWebView(webviewPanel) {
                 <div class="translate_action_wrap">
                   <select id="translateOrigin">
                     <option value="youdao">有道翻译</option>
+                    <option value="baidu">百度翻译</option>
                     <option value="google">google翻译</option>
                   </select>
                   <button class="translate_btn" id="translateBtn">翻译</button>
@@ -391,6 +393,8 @@ function showWebView(webviewPanel) {
                     } else if (msg.command == "autoFill") {
                       translateInput.value = msg.text;
                       translateBtn.click();
+                    } else if (msg.command == "origin") {
+                      translateOriginSelect.value = msg.text;
                     }
                   });
                   hbuilderx.postMessage({
@@ -409,7 +413,10 @@ function showWebView(webviewPanel) {
 			if (msg.command == 'translate') {
 				let pyResult = translatePyAction(msg.text);
         let origin = msg.origin ? msg.origin : 'youdao';
-				translateAction[origin](msg.text).then((response) => {
+        let options = {
+          hx: hx
+        };
+				translateAction[origin](msg.text, options).then((response) => {
 					// console.log("---翻译---：", response.data);
 					if (response.errorCode !== 0) {
 						hx.window.setStatusBarMessage("抱谦，翻译失败，请稍后再试！", 2000, "error");
@@ -431,6 +438,10 @@ function showWebView(webviewPanel) {
 			
 			// 收到webview准备好的话去获取当前用户是否选择了内容，有选择自动填充到翻译框中
 			if (msg.command == 'init') {
+        webview.postMessage({
+        	 command: "origin",
+        	 text: origin
+        });
 				// 获取当前选区文本自动填充到翻译表单中
 				let editorPromise = hx.window.getActiveTextEditor();
 				editorPromise.then(function(editor) {
@@ -450,8 +461,6 @@ function showWebView(webviewPanel) {
 				});
 			}
     });
-		
-		
 };
 
 

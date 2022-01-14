@@ -17,6 +17,27 @@
 		"onView:api.WebViewRightSide"
 	],
 	"contributes": {
+    "configuration":{
+      "title":"翻译助手",
+      "properties":{
+        "translator.torigin":{
+          "type":"string",
+          "default":"youdao",
+          "enum":["youdao","baidu","google"],
+          "description":"默认使用的翻译源"
+        },
+        "translator.bd_appid":{
+          "type":"string",
+          "default":"",
+          "description":"百度翻译appid"
+        },
+        "translator.secret_key":{
+          "type":"string",
+          "default":"",
+          "description":"百度翻译密钥"
+        }
+      }
+    },
 		"viewsContainers": {
 			"activitybar": [
 				{
