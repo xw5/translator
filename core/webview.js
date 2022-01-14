@@ -21,8 +21,7 @@ function showWebView(webviewPanel) {
     let origin = config.get('translator.torigin');
     
     webview.html =
-        `
-        <!DOCTYPE html>
+        `<!DOCTYPE html>
         <html>
           <head>
             <meta charset="utf-8">
@@ -398,7 +397,8 @@ function showWebView(webviewPanel) {
                     }
                   });
                   hbuilderx.postMessage({
-                    command: 'init'
+                    command: 'init',
+                    text: 'first'
                   });
                 }, 500);
               }
@@ -438,10 +438,12 @@ function showWebView(webviewPanel) {
 			
 			// 收到webview准备好的话去获取当前用户是否选择了内容，有选择自动填充到翻译框中
 			if (msg.command == 'init') {
-        webview.postMessage({
-        	 command: "origin",
-        	 text: origin
-        });
+        if (msg.text === 'first') {
+          webview.postMessage({
+             command: "origin",
+             text: origin
+          });
+        }
 				// 获取当前选区文本自动填充到翻译表单中
 				let editorPromise = hx.window.getActiveTextEditor();
 				editorPromise.then(function(editor) {
