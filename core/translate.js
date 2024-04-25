@@ -2,6 +2,7 @@ let axios = require("axios");
 var pinyin = require("chinese-to-pinyin");
 const tencentcloud = require("tencentcloud-sdk-nodejs-tmt");
 const Core = require('@alicloud/pop-core');
+const {runTranslate} = require('./bdTranslate.js');
 var MD5 = require("./md5.js");
 
 const TmtClient = tencentcloud.tmt.v20180321.Client;
@@ -269,6 +270,38 @@ function translateBytxy(keywords, options) {
 }
 
 /**
+ * 执行搜狗翻译
+ * @param {String} keywords
+ * @param {String} options
+ */
+function translateBytsg(keywords, options) {
+	if (!keywords) {
+		return;
+	}
+  return new Promise((resolve, reject) => {
+	  var isZw = /[\u4e00-\u9fa5]/.test(keywords);
+	  var Source = isZw ? 'zh-CHS' : 'en';
+	  var Target = isZw ? 'en' : 'zh-CHS';
+	  runTranslate(keywords, Source,Target).then((result) => {
+		if (result) {
+			resolve({
+			  errorCode: 0,
+			  value: result
+			})
+		} else {
+			resolve({
+			  errorCode: -1,
+			  value: null
+			})
+		}
+	  }).catch((err) => {
+			reject(err);
+	  })
+  })
+  
+}
+
+/**
  * 执行拼音翻译
  * @param {String} keywords
  */
@@ -282,7 +315,8 @@ function translatePyAction(keywords) {
 const translateAction = {
   tengxun: translateBytxy,
   aliyun: translateByaly,
-  baidu: translateByBaiDu
+  baidu: translateByBaiDu,
+  sogou: translateBytsg
 }
 
 module.exports = {

@@ -144,6 +144,7 @@ function showWebView(webviewPanel) {
 								</div>
 								<div class="translate_action_wrap">
 									<select id="translateOrigin">
+										<option value="sogou">搜狗翻译</option>
 										<option value="baidu">百度翻译</option>
 										<option value="tengxun">腾讯云翻译</option>
 										<option value="aliyun">阿里云翻译</option>
@@ -411,6 +412,7 @@ function showWebView(webviewPanel) {
 						</script>
 					</body>
 				</html>
+
       `;
     webview.onDidReceiveMessage((msg) => {
 			if (msg.command == 'translate') {
