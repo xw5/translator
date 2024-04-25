@@ -145,8 +145,8 @@ function showWebView(webviewPanel) {
 								<div class="translate_action_wrap">
 									<select id="translateOrigin">
 										<option value="baidu">百度翻译</option>
-										<option value="txy">腾讯云翻译</option>
-										<option value="aly">阿里云翻译</option>
+										<option value="tengxun">腾讯云翻译</option>
+										<option value="aliyun">阿里云翻译</option>
 									</select>
 									<button class="translate_btn" id="translateBtn">翻译</button>
 								</div>
@@ -373,21 +373,24 @@ function showWebView(webviewPanel) {
 									if (!hbuilderx) return;
 									hbuilderx.onDidReceiveMessage((msg) => {
 										if (msg.command == "translateBack") {
-											let translateResultStr = msg.data.value;
+											let translateResultStr = msg.data.value ? msg.data.value : '';
 											let translatePyResultStr = msg.data.pyResult;
-											translateResult[0].innerHTML = translateResultStr;
-											translateResult[1].innerHTML = exchangeTools.hump(translateResultStr);
-											translateResult[2].innerHTML = exchangeTools.uppercase(translateResultStr, '_');
-											translateResult[3].innerHTML = exchangeTools.uppercase(translateResultStr, '');
-											translateResult[4].innerHTML = exchangeTools.lowercase(translateResultStr, '_');
-											translateResult[5].innerHTML = exchangeTools.lowercase(translateResultStr, '');
-
-											translatePyResult[0].innerHTML = translatePyResultStr;
-											translatePyResult[1].innerHTML = exchangeTools.hump(translatePyResultStr);
-											translatePyResult[2].innerHTML = exchangeTools.uppercase(translatePyResultStr, '_');
-											translatePyResult[3].innerHTML = exchangeTools.uppercase(translatePyResultStr, '');
-											translatePyResult[4].innerHTML = exchangeTools.lowercase(translatePyResultStr, '_');
-											translatePyResult[5].innerHTML = exchangeTools.lowercase(translatePyResultStr, '');
+								if (translateResultStr) {
+									translateResult[0].innerHTML = translateResultStr;
+									translateResult[1].innerHTML = exchangeTools.hump(translateResultStr);
+									translateResult[2].innerHTML = exchangeTools.uppercase(translateResultStr, '_');
+									translateResult[3].innerHTML = exchangeTools.uppercase(translateResultStr, '');
+									translateResult[4].innerHTML = exchangeTools.lowercase(translateResultStr, '_');
+									translateResult[5].innerHTML = exchangeTools.lowercase(translateResultStr, '');
+								}
+								if (translatePyResultStr) {
+									translatePyResult[0].innerHTML = translatePyResultStr;
+									translatePyResult[1].innerHTML = exchangeTools.hump(translatePyResultStr);
+									translatePyResult[2].innerHTML = exchangeTools.uppercase(translatePyResultStr, '_');
+									translatePyResult[3].innerHTML = exchangeTools.uppercase(translatePyResultStr, '');
+									translatePyResult[4].innerHTML = exchangeTools.lowercase(translatePyResultStr, '_');
+									translatePyResult[5].innerHTML = exchangeTools.lowercase(translatePyResultStr, '');
+								}
 											copyBtnToggle(true);
 										} else if (msg.command == "autoFill") {
 											translateInput.value = msg.text;
@@ -428,6 +431,13 @@ function showWebView(webviewPanel) {
 						 data: response
 					});
 					hx.env.clipboard.writeText(response.value);
+				}).catch(() => {
+					webview.postMessage({
+					   command: "translateBack",
+						 data: {
+							 pyResult: pyResult
+						 }
+					});
 				});
 			}
       
@@ -439,6 +449,7 @@ function showWebView(webviewPanel) {
 			// 收到webview准备好的话去获取当前用户是否选择了内容，有选择自动填充到翻译框中
 			if (msg.command == 'init') {
         if (msg.text === 'first') {
+					console.log('---- init first ----:', origin);
           webview.postMessage({
              command: "origin",
              text: origin

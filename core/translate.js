@@ -280,8 +280,8 @@ function translatePyAction(keywords) {
 }
 
 const translateAction = {
-  txy: translateBytxy,
-  aly: translateByaly,
+  tengxun: translateBytxy,
+  aliyun: translateByaly,
   baidu: translateByBaiDu
 }
 
