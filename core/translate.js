@@ -180,7 +180,7 @@ function translateByaly(keywords, options) {
 	};
 	
 	alyclient.request('TranslateGeneral', params, requestOption).then((result) => {
-	  console.log('---- aly ----', JSON.stringify(result));
+	  // console.log('---- aly ----', JSON.stringify(result));
 	  if (result && result.Data && result.Data.Translated) {
 		  resolve({
 			errorCode: 0,

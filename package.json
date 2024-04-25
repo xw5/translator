@@ -102,18 +102,14 @@
 		"tencentcloud-sdk-nodejs-tmt": "^4.0.810"
 	},
 	"keywords": [
-		"翻译",
-		"变量",
-		"中英翻译",
-		"拼音翻译"
-	],
+        "翻译",
+        "变量",
+        "中英翻译",
+        "拼音翻译"
+    ],
 	"repository": "https://gitee.com/github-9819409/translator",
-	"dcloudext": {
-		"category": [
-			"HBuilderX",
-			"HBuilderX"
-		],
-		"contact": {
+    "dcloudext": {
+        "contact": {
 			"qq": "412832768"
 		},
 		"declaration": {
@@ -121,6 +117,7 @@
 			"data": "无",
 			"permissions": "无"
 		},
-		"npmurl": ""
+        "npmurl": "",
+        "type": "hbuilderx"
 	}
 }

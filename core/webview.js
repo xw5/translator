@@ -449,7 +449,7 @@ function showWebView(webviewPanel) {
 			// 收到webview准备好的话去获取当前用户是否选择了内容，有选择自动填充到翻译框中
 			if (msg.command == 'init') {
         if (msg.text === 'first') {
-					console.log('---- init first ----:', origin);
+					// console.log('---- init first ----:', origin);
           webview.postMessage({
              command: "origin",
              text: origin
