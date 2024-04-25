@@ -7,22 +7,31 @@ function showWebView(webviewPanel) {
     let webview = webviewPanel.webView;
     
     let background = '';
+		let color = '';
+		let resultColor = '';
     
 		// 获取设置
     let config = hx.workspace.getConfiguration();
     let colorScheme = config.get('editor.colorScheme');
     if (colorScheme == 'Monokai') {
-        background = 'rgb(39,40,34)'
+        background = 'rgb(39,40,34)';
+				color = '#fff';
+				resultColor = '#e6db74';
     } else if (colorScheme == 'Atom One Dark') {
-        background = 'rgb(40,44,53)'
+        background = 'rgb(40,44,53)';
+				color = '#fff';
+				resultColor = '#e6db74';
     } else {
-        background = 'rgb(255,250,232)'
+        background = 'rgb(255,250,232)';
+				color = '#333';
+				resultColor = 'green';
     };
     let origin = config.get('translator.torigin');
-    
+    let size = config.get('translator.size');
+		// console.log('---- size ----:', size);
     webview.html =
       `<!DOCTYPE html>
-				<html>
+				<html style="--size:${size}px;--bg:${background};--color:${color};--resultColor:${resultColor}">
 					<head>
 						<meta charset="utf-8">
 						<style type="text/css">
@@ -35,8 +44,9 @@ function showWebView(webviewPanel) {
 
 							html,
 							body {
-								font-size: 14px;
+								font-size: calc(var(--size) * 1.16);
 								color: #333;
+								background-color: var(--bg);
 							}
 
 							.translate_wrap {
@@ -72,8 +82,10 @@ function showWebView(webviewPanel) {
 
 							.translate_input {
 								flex: 1;
+								font-size: var(--size);
 								line-height: 32px;
 							}
+							
 
 							.translate_action_wrap {
 								display: flex;
@@ -99,7 +111,7 @@ function showWebView(webviewPanel) {
 							}
 
 							.translate_title {
-								color: #333;
+								color: var(--color);
 							}
 
 							.translate_py_title {
@@ -113,7 +125,7 @@ function showWebView(webviewPanel) {
 							}
 
 							.result_type {
-								color: #999;
+								color: var(--color);
 							}
 
 							.copy_btn {
@@ -124,14 +136,14 @@ function showWebView(webviewPanel) {
 
 							.translate_result {
 								flex: 1;
-								font-size: 12px;
+								font-size: var(--size);
 								margin-right: 5px;
 								line-height: 24px;
 								min-height: 34px;
 								box-sizing: border-box;
 								border-bottom: 1px solid #999;
 								padding: 5px;
-								color: green;
+								color: var(--resultColor);
 							}
 						</style>
 					</head>

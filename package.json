@@ -3,7 +3,7 @@
 	"name": "translator",
 	"description": "翻译助手，写代码起变量就用它",
 	"displayName": "翻译助手",
-	"version": "1.0.1",
+	"version": "1.0.5",
 	"publisher": "xiewu",
 	"engines": {
 		"HBuilderX": "^3.0.0"
@@ -32,14 +32,14 @@
 					"description": "默认使用的翻译源"
 				},
 				"translator.size": {
-					"type": "string",
-					"default": "baidu",
+					"type": "number",
+					"default": 12,
 					"enum": [
-						"baidu",
-						"tengxun",
-						"aliyun"
+						12,
+						14,
+						16
 					],
-					"description": "默认使用的翻译源"
+					"description": "文字大小"
 				},
 				"translator.bd_appid": {
 					"type": "string",
